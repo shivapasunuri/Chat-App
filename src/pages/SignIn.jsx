@@ -13,7 +13,6 @@ const SignIn = () => {
           createdAt: firebase.database.ServerValue.TIMESTAMP,
         });
       }
-
       Alert.success("Signed in", 4000);
     } catch (error) {
       Alert.error(error.message, 4000);
