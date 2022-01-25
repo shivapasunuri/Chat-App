@@ -92,3 +92,4 @@ const ProviderBlock = () => {
 };
 
 export default ProviderBlock;
+// npm install react-avatar-editor@11.0.7
