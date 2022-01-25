@@ -2,6 +2,7 @@ import React from "react";
 import { Redirect, Route } from "react-router-dom";
 import { Container, Loader } from "rsuite";
 import { useProfile } from "../context/profile.context";
+
 const PublicRoute = ({ children, ...routeProps }) => {
   const { profile, isLoading } = useProfile();
   if (isLoading && !profile) {
