@@ -12,7 +12,7 @@ const PrivateRoute = ({ children, ...routeProps }) => {
       </Container>
     );
   }
-  if (!profile) {
+  if (!profile && !isLoading) {
     return <Redirect to="/signin" />;
   }
   return <Route {...routeProps}>{children}</Route>;
