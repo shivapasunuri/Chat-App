@@ -1,14 +1,14 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useState, useCallback, useRef } from "react";
 import {
-  Alert,
   Button,
-  ControlLabel,
-  Form,
-  FormControl,
-  FormGroup,
   Icon,
   Modal,
+  Form,
+  ControlLabel,
+  FormControl,
+  FormGroup,
   Schema,
+  Alert,
 } from "rsuite";
 import firebase from "firebase/app";
 import { useModalState } from "../../misc/custom-hook";
@@ -17,8 +17,8 @@ import { database } from "../../misc/firebase";
 const { StringType } = Schema.Types;
 
 const model = Schema.Model({
-  name: StringType().isRequired(`Chat name is required`),
-  description: StringType.isRequired("Chat description is required"),
+  name: StringType().isRequired("Chat name is required"),
+  description: StringType().isRequired("Description is required"),
 });
 
 const INITIAL_FORM = {
@@ -29,38 +29,37 @@ const INITIAL_FORM = {
 const CreateRoomBtnModal = () => {
   const { isOpen, open, close } = useModalState();
 
-  const [formValue, setFromValue] = useState(INITIAL_FORM);
+  const [formValue, setFormValue] = useState(INITIAL_FORM);
   const [isLoading, setIsLoading] = useState(false);
   const formRef = useRef();
 
   const onFormChange = useCallback((value) => {
-    setFromValue(value);
+    setFormValue(value);
   }, []);
 
   const onSubmit = async () => {
     if (!formRef.current.check()) {
       return;
     }
+
     setIsLoading(true);
 
-    const newRoomData = {
+    const newRoomdata = {
       ...formValue,
       createdAt: firebase.database.ServerValue.TIMESTAMP,
     };
 
     try {
-      await database.ref("rooms").push(newRoomData);
+      await database.ref("rooms").push(newRoomdata);
 
       Alert.info(`${formValue.name} has been created`, 4000);
 
       setIsLoading(false);
-      setFromValue(INITIAL_FORM);
-
+      setFormValue(INITIAL_FORM);
       close();
-    } catch (error) {
+    } catch (err) {
       setIsLoading(false);
-
-      Alert.error(error.message, 4000);
+      Alert.error(err.message, 4000);
     }
   };
 
@@ -69,29 +68,31 @@ const CreateRoomBtnModal = () => {
       <Button block color="green" onClick={open}>
         <Icon icon="creative" /> Create new chat room
       </Button>
+
       <Modal show={isOpen} onHide={close}>
         <Modal.Header>
-          <Modal.Title>New Chat room</Modal.Title>
+          <Modal.Title>New chat room</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form
             fluid
             onChange={onFormChange}
+            formValue={formValue}
             model={model}
             ref={formRef}
-            formValue={formValue}
           >
             <FormGroup>
               <ControlLabel>Room name</ControlLabel>
-              <FormControl name="name" placeholder="Enter chat room name" />
+              <FormControl name="name" placeholder="Enter chat room name..." />
             </FormGroup>
+
             <FormGroup>
               <ControlLabel>Description</ControlLabel>
               <FormControl
                 componentClass="textarea"
-                name="description"
-                placeholder="Enter chat room description"
                 rows={5}
+                name="description"
+                placeholder="Enter room description..."
               />
             </FormGroup>
           </Form>
