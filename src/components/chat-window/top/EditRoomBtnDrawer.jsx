@@ -10,7 +10,6 @@ import EditableInput from "../../dashboard/EditableInput";
 const EditRoomBtnDrawer = () => {
   const { isOpen, open, close } = useModalState();
   const { chatId } = useParams();
-  console.log("chatId", chatId);
   const isMobile = useMediaQuery("(max-width: 992px)");
 
   const name = useCurrentRoom((v) => v.name);
