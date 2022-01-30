@@ -5,6 +5,7 @@ import { useProfile } from "../context/profile.context";
 
 const PublicRoute = ({ children, ...routeProps }) => {
   const { profile, isLoading } = useProfile();
+  console.log("children", children);
 
   if (isLoading && !profile) {
     return (
